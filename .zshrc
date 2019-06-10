@@ -121,3 +121,8 @@ load-tfswitch
 
 source /usr/local/bin/kube-ps1/kube-ps1.sh
 RPROMPT='$(kube_ps1)'
+
+# Dir: current working directory
+prompt_dir() {
+  prompt_segment blue black '%2~'
+}
