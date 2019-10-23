@@ -1,3 +1,1 @@
 alias k='kubectl'
-alias updaws='awscli sts get-caller-identity'
-alias get_token='kubectl -n kube-system describe secret kubernetes-dashboard-token-hkdd5'
