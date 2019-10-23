@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH="/home/mkotlyarevskaya/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -36,7 +36,7 @@ ZSH_THEME="agnoster"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="false"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
@@ -62,12 +62,14 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git 
+plugins=(git
 	zsh-autosuggestions
 	zsh-syntax-highlighting
 	kubectl
 	docker
 	docker-compose
+	aws
+	battery
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -77,7 +79,7 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -118,11 +120,39 @@ load-tfswitch() {
 }
 add-zsh-hook chpwd load-tfswitch
 load-tfswitch
-
-source /usr/local/bin/kube-ps1/kube-ps1.sh
+source "/usr/local/opt/kube-ps1/share/kube-ps1.sh"
 RPROMPT='$(kube_ps1)'
+
+# To customize prompt, run `p9k_configure` or edit ~/.p10k.zsh.
+source ~/.p10k.zsh
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+export PATH="/Users/maria.kotlyarevskaya/Library/Python/3.7/bin:$PATH"
+export PATH="/Users/maria.kotlyarevskaya/go/bin/:$PATH"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+#OktaAWSCLI
+if [[ -f "$HOME/.okta/bash_functions" ]]; then
+    . "$HOME/.okta/bash_functions"
+fi
+if [[ -d "$HOME/.okta/bin" && ":$PATH:" != *":$HOME/.okta/bin:"* ]]; then
+    PATH="$HOME/.okta/bin:$PATH"
+fi
 
 # Dir: current working directory
 prompt_dir() {
   prompt_segment blue black '%2~'
 }
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/maria.kotlyarevskaya/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/maria.kotlyarevskaya/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/maria.kotlyarevskaya/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/maria.kotlyarevskaya/google-cloud-sdk/completion.zsh.inc'; fi
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+export PKG_CONFIG_PATH="/usr/local/opt/readline/lib/pkgconfig"
