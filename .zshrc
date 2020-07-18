@@ -2,17 +2,17 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH="/Users/maria.kotlyarevskaya/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="agnoster"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
@@ -26,8 +26,14 @@ ZSH_THEME="agnoster"
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
 
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -58,19 +64,20 @@ ENABLE_CORRECTION="false"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git
-	zsh-autosuggestions
-	zsh-syntax-highlighting
-	kubectl
-	docker
-	docker-compose
-	aws
-	battery
-)
+		zsh-autosuggestions
+		zsh-syntax-highlighting
+		kubectl
+		gcloud
+		docker
+		terraform
+		minikube
+		helm
+	)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -99,6 +106,17 @@ export LANG=en_US.UTF-8
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
 #
 # Load local aliases
 [[ -f ~/.zsha ]] && source ~/.zsha
@@ -110,49 +128,24 @@ if [ -f ~/.zsh_nocorrect ]; then
     done < ~/.zsh_nocorrect
 fi
 
-# Switch for tfwitch
-load-tfswitch() {
-  local tfswitchrc_path=".tfswitchrc"
-
-  if [ -f "$tfswitchrc_path" ]; then
-    tfswitch
-  fi
-}
-add-zsh-hook chpwd load-tfswitch
-load-tfswitch
+# kube-ps1
 source "/usr/local/opt/kube-ps1/share/kube-ps1.sh"
-RPROMPT='$(kube_ps1)'
-
-# To customize prompt, run `p9k_configure` or edit ~/.p10k.zsh.
-source ~/.p10k.zsh
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-export PATH="/Users/maria.kotlyarevskaya/Library/Python/3.7/bin:$PATH"
-export PATH="/Users/maria.kotlyarevskaya/go/bin/:$PATH"
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-#OktaAWSCLI
-if [[ -f "$HOME/.okta/bash_functions" ]]; then
-    . "$HOME/.okta/bash_functions"
-fi
-if [[ -d "$HOME/.okta/bin" && ":$PATH:" != *":$HOME/.okta/bin:"* ]]; then
-    PATH="$HOME/.okta/bin:$PATH"
-fi
+export KUBE_PS1_SYMBOL_ENABLE="false"
+RPROMPT='$(date +%H:%M:%S) $(kube_ps1)'
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment blue black '%2~'
+ 	prompt_segment blue black '%2~'
 }
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+prompt_context() {
+	color=green
+	prompt_segment $color black "$(cat ~/.config/gcloud/active_config)"
+}
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/maria.kotlyarevskaya/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/maria.kotlyarevskaya/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/maria.kotlyarevskaya/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/maria.kotlyarevskaya/google-cloud-sdk/completion.zsh.inc'; fi
-
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-
-export PKG_CONFIG_PATH="/usr/local/opt/readline/lib/pkgconfig"
+[[ /usr/local/bin/kubectl ]] && source <(kubectl completion zsh)

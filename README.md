@@ -1,0 +1,1 @@
+1. iTerm theme: `Monokai Soda`, font: `Meslo LG S DZ for Powershell`
