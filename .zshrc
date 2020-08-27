@@ -69,15 +69,15 @@ ENABLE_CORRECTION="false"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git
-		zsh-autosuggestions
-		zsh-syntax-highlighting
-		kubectl
-		gcloud
-		docker
-		terraform
-		minikube
-		helm
-	)
+                zsh-autosuggestions
+                zsh-syntax-highlighting
+                kubectl
+                gcloud
+                docker
+                terraform
+                minikube
+                helm
+        )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -135,12 +135,12 @@ RPROMPT='$(date +%H:%M:%S) $(kube_ps1)'
 
 # Dir: current working directory
 prompt_dir() {
- 	prompt_segment blue black '%2~'
+        prompt_segment blue black '%2~'
 }
 
 prompt_context() {
-	color=green
-	prompt_segment $color black "$(cat ~/.config/gcloud/active_config)"
+        color=green
+        prompt_segment $color black "$(cat ~/.config/gcloud/active_config)"
 }
 
 # The next line updates PATH for the Google Cloud SDK.
@@ -149,3 +149,14 @@ if [ -f '/Users/maria.kotlyarevskaya/google-cloud-sdk/path.zsh.inc' ]; then . '/
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/maria.kotlyarevskaya/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/maria.kotlyarevskaya/google-cloud-sdk/completion.zsh.inc'; fi
 [[ /usr/local/bin/kubectl ]] && source <(kubectl completion zsh)
+
+# tfswitch
+load-tfswitch() {
+  local tfswitchrc_path="terraform.tf"
+
+  if [ -f "$tfswitchrc_path" ]; then
+    tfswitch
+  fi
+}
+add-zsh-hook chpwd load-tfswitch
+load-tfswitch
