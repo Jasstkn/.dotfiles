@@ -69,15 +69,15 @@ ENABLE_CORRECTION="false"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git
-                zsh-autosuggestions
-                zsh-syntax-highlighting
-                kubectl
-                gcloud
-                docker
-                terraform
-                minikube
-                helm
-        )
+		zsh-autosuggestions
+		zsh-syntax-highlighting
+		kubectl
+		gcloud
+		docker
+		terraform
+		minikube
+		helm
+	)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -128,6 +128,9 @@ if [ -f ~/.zsh_nocorrect ]; then
     done < ~/.zsh_nocorrect
 fi
 
+# kubectl autosuggestion
+[[ /usr/local/bin/kubectl ]] && source <(kubectl completion zsh)
+
 # kube-ps1
 source "/usr/local/opt/kube-ps1/share/kube-ps1.sh"
 export KUBE_PS1_SYMBOL_ENABLE="false"
@@ -135,12 +138,12 @@ RPROMPT='$(date +%H:%M:%S) $(kube_ps1)'
 
 # Dir: current working directory
 prompt_dir() {
-        prompt_segment blue black '%2~'
+ 	prompt_segment blue black '%2~'
 }
 
 prompt_context() {
-        color=green
-        prompt_segment $color black "$(cat ~/.config/gcloud/active_config)"
+	color=green
+	# prompt_segment $color black "$(cat ~/.config/gcloud/active_config)"
 }
 
 # The next line updates PATH for the Google Cloud SDK.
@@ -148,7 +151,6 @@ if [ -f '/Users/maria.kotlyarevskaya/google-cloud-sdk/path.zsh.inc' ]; then . '/
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/maria.kotlyarevskaya/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/maria.kotlyarevskaya/google-cloud-sdk/completion.zsh.inc'; fi
-[[ /usr/local/bin/kubectl ]] && source <(kubectl completion zsh)
 
 # tfswitch
 load-tfswitch() {
@@ -160,3 +162,25 @@ load-tfswitch() {
 }
 add-zsh-hook chpwd load-tfswitch
 load-tfswitch
+
+# python PATH
+export PATH="/Users/maria.kotlyarevskaya/Library/Python/3.9/bin:$PATH"
+export PATH="$HOME/.poetry/bin:$PATH"
+
+# golang PATH
+export PATH=$PATH:$(go env GOPATH)/bin
+export GOPATH=~/go/
+export GOROOT=/usr/local/opt/go/libexec
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
+
+
+export PATH="${PATH}:${HOME}/.krew/bin"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+source /Users/maria.kotlyarevskaya/.poetry/env
