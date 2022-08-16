@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/maria.kotlyarevskaya/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -23,14 +23,13 @@ ZSH_THEME="agnoster"
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+# zstyle ':omz:update' frequency 13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
@@ -45,6 +44,9 @@ ZSH_THEME="agnoster"
 ENABLE_CORRECTION="false"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -75,7 +77,6 @@ plugins=(git
 		gcloud
 		docker
 		terraform
-		minikube
 		helm
 	)
 
@@ -86,7 +87,7 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-export LANG=en_US.UTF-8
+# export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -107,32 +108,14 @@ export LANG=en_US.UTF-8
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-#
-# Load local aliases
+# load local aliases from file
 [[ -f ~/.zsha ]] && source ~/.zsha
 
-# Ignore autocorrection for specific commands
-if [ -f ~/.zsh_nocorrect ]; then
-    while read -r COMMAND; do
-        alias $COMMAND="nocorrect $COMMAND"
-    done < ~/.zsh_nocorrect
-fi
-
-# kubectl autosuggestion
-[[ /usr/local/bin/kubectl ]] && source <(kubectl completion zsh)
+# kubectl autocompletion
+source <(kubectl completion zsh)
 
 # kube-ps1
-source "/usr/local/opt/kube-ps1/share/kube-ps1.sh"
+source "/opt/homebrew/opt/kube-ps1/share/kube-ps1.sh"
 export KUBE_PS1_SYMBOL_ENABLE="false"
 RPROMPT='$(date +%H:%M:%S) $(kube_ps1)'
 
@@ -146,11 +129,19 @@ prompt_context() {
 	# prompt_segment $color black "$(cat ~/.config/gcloud/active_config)"
 }
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/maria.kotlyarevskaya/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/maria.kotlyarevskaya/google-cloud-sdk/path.zsh.inc'; fi
+# new line for terminal
+prompt_end() {
+  if [[ -n $CURRENT_BG ]]; then
+    echo -n " %{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR"
+  else
+    echo -n "%{%k%}"
+  fi
+  echo -n "\n%{%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR%{%f%}"
+  CURRENT_BG=''
+}
 
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/maria.kotlyarevskaya/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/maria.kotlyarevskaya/google-cloud-sdk/completion.zsh.inc'; fi
+# Ansible
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # tfswitch
 load-tfswitch() {
@@ -163,24 +154,23 @@ load-tfswitch() {
 add-zsh-hook chpwd load-tfswitch
 load-tfswitch
 
-# python PATH
-export PATH="/Users/maria.kotlyarevskaya/Library/Python/3.9/bin:$PATH"
-export PATH="$HOME/.poetry/bin:$PATH"
-
 # golang PATH
 export PATH=$PATH:$(go env GOPATH)/bin
 export GOPATH=~/go/
-export GOROOT=/usr/local/opt/go/libexec
 export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$GOROOT/bin
+export GH_USERNAME="Jasstkn"
 
+# terraform
+export PATH=$PATH:~/bin
 
-export PATH="${PATH}:${HOME}/.krew/bin"
+# homebrew
+export PATH=/opt/homebrew/bin:$PATH
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# configure default python
+eval "$(pyenv init --path)"
 
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+#krew config
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
-source /Users/maria.kotlyarevskaya/.poetry/env
+# arkade config
+export PATH=$PATH:$HOME/.arkade/bin/
