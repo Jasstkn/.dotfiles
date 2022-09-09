@@ -8,6 +8,9 @@ tap "knqyf263/pet"
 tap "norwoodj/tap"
 # tfswitch
 tap "warrensbox/tap"
+# goreleaser
+tap "goreleaser/tap/goreleaser"
+
 
 # apps
 brew "cloc"
