@@ -1,0 +1,13 @@
+[user]
+	name = Mariia Kotliarevskaia
+	email = mariia.kotliarevskaia@gmail.com
+[commit]
+	gpgsign=true
+[alias]
+	commend=commit --amend --no-edit
+	squash="!f(){ git reset --soft HEAD~${1} && git commit --edit -m\"$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f"
+	c=commit -s -S
+[push]
+	default=current
+[core]
+	excludesFile = ~/.gitignore
