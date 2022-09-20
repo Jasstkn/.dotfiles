@@ -8,7 +8,7 @@ tap "knqyf263/pet"
 tap "norwoodj/tap"
 # tfswitch
 tap "warrensbox/tap"
-# goreleaser
+# goreleaser 
 tap "goreleaser/tap/goreleaser"
 
 
