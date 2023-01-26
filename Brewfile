@@ -9,7 +9,7 @@ tap "norwoodj/tap"
 # tfswitch
 tap "warrensbox/tap"
 # goreleaser 
-tap "goreleaser/tap/goreleaser"
+tap "goreleaser/tap"
 
 
 # apps
@@ -37,7 +37,7 @@ brew "kube-ps1"
 brew "kubectx"
 brew "minikube"
 brew "norwoodj/tap/helm-docs"
-brew "postgresql"
+brew "postgresql@14"
 brew "shellcheck"
 brew "terraform-docs"
 brew "tflint"
@@ -46,6 +46,7 @@ brew "tree"
 brew "warrensbox/tap/tfswitch"
 brew "watch"
 brew "wrk"
+brew "zoxide"
 
 # cask apps
 cask "discord"
