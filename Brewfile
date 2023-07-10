@@ -26,6 +26,7 @@ brew "watch"
 
 # cask apps
 cask "alfred"
+cask "alt-tab"
 cask "google-chrome"
 cask "spotify"
 cask "sublime-text"
