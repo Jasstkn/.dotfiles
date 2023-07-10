@@ -25,8 +25,10 @@ brew "tree"
 brew "watch"
 
 # cask apps
+cask "alfred"
 cask "google-chrome"
 cask "spotify"
 cask "sublime-text"
 cask "visual-studio-code"
 cask "obsidian"
+cask "telegram"
