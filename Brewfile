@@ -23,6 +23,7 @@ brew "task"
 brew "tldr"
 brew "tree"
 brew "watch"
+brew "zoxide"
 
 # cask apps
 cask "alfred"
@@ -33,3 +34,4 @@ cask "sublime-text"
 cask "visual-studio-code"
 cask "obsidian"
 cask "telegram"
+cask "todoist"
