@@ -19,6 +19,7 @@ brew "go"
 brew "go-task"
 brew "fzf"
 brew "jq"
+brew "kubebuilder"
 brew "kubectl"
 brew "kubectx"
 brew "tldr"
@@ -28,7 +29,6 @@ brew "zoxide"
 
 
 # cask apps
-cask "alfred"
 cask "alt-tab"
 cask "discord"
 cask "goland"
