@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -8,7 +15,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="agnoster"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -41,7 +48,7 @@ ZSH_THEME="agnoster"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="false"
+# ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # You can also set it to another string to have that shown instead of the default red dots.
@@ -70,15 +77,15 @@ ENABLE_CORRECTION="false"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git
-		zsh-autosuggestions
-		zsh-syntax-highlighting
-		kubectl
-		gcloud
-		docker
-		terraform
-		helm
-	)
+plugins=(
+  git
+  git-commit
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  kubectl
+  docker
+  helm
+  )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -108,69 +115,38 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# plugins
+source $HOME/.oh-my-zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# default platform for docker
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
+
+# golang
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+export GH_USERNAME="jasstkn"
+
+# dotnet fixes
+export DOTNET_BUNDLE_EXTRACT_BASE_DIR="/tmp/test"
+
 # load local aliases from file
 [[ -f ~/.zsha ]] && source ~/.zsha
 
-# kubectl autocompletion
-source <(kubectl completion zsh)
+# local brew
+export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
+eval "$(/opt/homebrew/bin/brew shellenv)"
+# use gnu-sed & -grep
+PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
+PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
 
-# kube-ps1
-source "/opt/homebrew/opt/kube-ps1/share/kube-ps1.sh"
-export KUBE_PS1_SYMBOL_ENABLE="false"
-RPROMPT='$(date +%H:%M:%S) $(kube_ps1)'
-
-# Dir: current working directory
-prompt_dir() {
- 	prompt_segment blue black '%2~'
-}
-
-prompt_context() {
-	color=green
-	# prompt_segment $color black "$(cat ~/.config/gcloud/active_config)"
-}
-
-# new line for terminal
-prompt_end() {
-  if [[ -n $CURRENT_BG ]]; then
-    echo -n " %{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR"
-  else
-    echo -n "%{%k%}"
-  fi
-  echo -n "\n%{%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR%{%f%}"
-  CURRENT_BG=''
-}
-
-# Ansible
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-
-# tfswitch
-load-tfswitch() {
-  local tfswitchrc_path="terraform.tf"
-
-  if [ -f "$tfswitchrc_path" ]; then
-    tfswitch
-  fi
-}
-add-zsh-hook chpwd load-tfswitch
-load-tfswitch
-
-# golang PATH
-export PATH=$PATH:$(go env GOPATH)/bin
-export GOPATH=~/go/
-export PATH=$PATH:$GOPATH/bin
-export GH_USERNAME="Jasstkn"
-
-# terraform
-export PATH=$PATH:~/bin
-
-# homebrew
-export PATH=/opt/homebrew/bin:$PATH
-
-# configure default python
-eval "$(pyenv init --path)"
-
-#krew config
+# kubectl & krew
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
-# arkade config
-export PATH=$PATH:$HOME/.arkade/bin/
+
+# Add .NET Core SDK tools
+export PATH="$PATH:$HOME/.dotnet/tools"
+
+eval "$(atuin init zsh)"

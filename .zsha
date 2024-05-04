@@ -1,6 +1,3 @@
-alias k="kubectl"
 alias kw="watch -n 1 "kubectl get pods --all-namespaces | grep -Ev '([0-9]+)/\1' | grep -v 'Completed'""
-alias gitlab_config="git config --local user.name Jasstkn; git config --local user.email jasssstkn@yahoo.com; git config --local commit.gpgsign true; git config --local user.signingkey DDD2C5C67091AB82;"
-alias flush_dns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
 
-alias upd_arkade="sudo curl -sLS https://get.arkade.dev | sudo sh"
+alias flush_dns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
