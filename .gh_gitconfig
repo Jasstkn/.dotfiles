@@ -1,0 +1,6 @@
+[gpg]
+    format = ssh
+[user]
+    signingkey = ~/.ssh/github.pub
+[alias]
+	c=commit -s -S
