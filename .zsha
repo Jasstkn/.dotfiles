@@ -1,3 +1,5 @@
 alias kw="watch -n 1 "kubectl get pods --all-namespaces | grep -Ev '([0-9]+)/\1' | grep -v 'Completed'""
 
 alias flush_dns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
+# use fzf to interactively select a branch to checkout
+alias gcob="git checkout \$(git branch -a | fzf)"
